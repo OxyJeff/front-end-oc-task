@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Day from './Day';
 import dayjs from 'dayjs';
-import './index.css';
+import './index.scss';
 
 const DATE_ROW_COUNT = 6;
 const DATE_COL_COUNT = 7;
@@ -10,11 +10,13 @@ const weeks = ['周一', '周二', '周三', '周四', '周五', '周六', '周�
 
 class Calendar extends PureComponent {
   static defaultProps = {
-    date: new Date()
+    date: new Date(),
+    onDateClick: () => {}
   };
 
   static propTypes = {
-    date: PropTypes.object
+    date: PropTypes.object,
+    onDateClick: PropTypes.func
   };
 
   renderWeekNumber() {
@@ -30,6 +32,7 @@ class Calendar extends PureComponent {
   }
 
   render() {
+    const { onDateClick } = this.props;
     const date = dayjs(this.props.date);
     const start = date.date(1).startOf('week');
     let rows = [...Array(DATE_ROW_COUNT).keys()];
@@ -39,7 +42,9 @@ class Calendar extends PureComponent {
       const days = [];
       for (let i = 0; i < DATE_COL_COUNT; i++) {
         const temp = rowStart.add(i, 'day');
-        const day = <Day key={temp.valueOf()} value={temp} />;
+        const day = (
+          <Day onClick={onDateClick} key={temp.valueOf()} value={temp} />
+        );
         days.push(day);
       }
       return days;

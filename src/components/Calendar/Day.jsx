@@ -4,8 +4,13 @@ import classnames from 'classnames';
 import dayjs from 'dayjs';
 
 class Day extends Component {
+  static defaultProps = {
+    onClick: () => {}
+  };
+
   static propTypes = {
-    value: PropTypes.instanceOf(dayjs)
+    value: PropTypes.instanceOf(dayjs),
+    onClick: PropTypes.func
   };
 
   isToday(day) {
@@ -18,10 +23,22 @@ class Day extends Component {
     const isToday = this.isToday(value);
     const classname = classnames('day', { today: isToday });
     const day = value.date();
+    const onClick = () => {
+      const date = value.toDate();
+      this.props.onClick(date);
+    };
     if (day === 1) {
-      return <div className={classname}>{value.format('MMM DD日')}</div>;
+      return (
+        <div onClick={onClick} className={classname}>
+          {value.format('MMM DD日')}
+        </div>
+      );
     }
-    return <div className={classname}>{day}</div>;
+    return (
+      <div onClick={onClick} className={classname}>
+        {day}
+      </div>
+    );
   }
 }
 

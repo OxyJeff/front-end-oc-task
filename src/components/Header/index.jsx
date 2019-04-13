@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
 import Select, { Option } from 'rc-select';
-import './index.css';
+import { Button } from 'antd';
+import './index.scss';
 import 'rc-select/assets/index.css';
 
 class Header extends Component {
@@ -80,13 +81,13 @@ class Header extends Component {
       <header className="navigation">
         <div className="logo">日历</div>
         <div className="today-btn">
-          <button
+          <Button
             onClick={() => {
               onDateChange(new Date());
             }}
           >
             今天
-          </button>
+          </Button>
         </div>
         <div className="year-selector"> {this.renderYearSelector()}</div>
         <div className="month-selector">{this.renderMonthSelector()}</div>
