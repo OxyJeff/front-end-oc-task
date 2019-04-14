@@ -1,9 +1,9 @@
 import db from './db';
 
-export async function createEvent({ date, hours, minutes, name }) {
-  return db.event.put({ date, hours, minutes, name });
+export async function saveEvent({ id, date, hours, minutes, name }) {
+  return db.event.add({ id, date, hours, minutes, name });
 }
 
-export async function getEvents({ date }) {
+export async function fetchAllEvents() {
   return db.event.toArray();
 }

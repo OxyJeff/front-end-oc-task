@@ -3,12 +3,14 @@ import Calendar from 'components/Calendar';
 import Header from 'components/Header';
 import EventModal from 'components/EventModal';
 import EventList from 'components/EventList';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import reducers from 'redux/reducer';
 import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+import { fetchEvents } from 'redux/action';
 import './App.css';
 
-const store = createStore(reducers);
+const store = createStore(reducers, applyMiddleware(thunk));
 
 class App extends PureComponent {
   state = {
@@ -31,6 +33,10 @@ class App extends PureComponent {
       selectedDate: undefined
     });
   };
+
+  componentDidMount() {
+    store.dispatch(fetchEvents());
+  }
 
   render() {
     const { date, eventModalVisible, selectedDate } = this.state;

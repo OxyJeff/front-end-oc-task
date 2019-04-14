@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
 import Event from 'model/Event';
 import { connect } from 'react-redux';
-import { addEvent } from 'redux/action';
+import { requestAddEvent } from 'redux/action';
 import './index.scss';
 
 class EventModal extends Component {
@@ -27,7 +27,7 @@ class EventModal extends Component {
         return;
       }
       const event = new Event({ ...value, date });
-      dispatch(addEvent(event));
+      dispatch(requestAddEvent(event));
       onSave(event);
     });
   };
