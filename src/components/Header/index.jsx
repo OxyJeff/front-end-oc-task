@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
 import Select, { Option } from 'rc-select';
 import { Button } from 'antd';
+import { connect } from 'react-redux';
+import { monthChange } from 'redux/action';
 import './index.scss';
 import 'rc-select/assets/index.css';
 
@@ -17,8 +19,13 @@ class Header extends Component {
     onDateChange: PropTypes.func
   };
 
+  onDateChange = date => {
+    this.props.dispatch(monthChange(date));
+    this.props.onDateChange(date);
+  };
+
   renderYearSelector() {
-    const { date, onDateChange } = this.props;
+    const { date } = this.props;
     const year = dayjs(date).year();
     const nowYear = dayjs().year();
     const options = [...Array(100).keys()].map(i => {
@@ -39,7 +46,7 @@ class Header extends Component {
           const newDate = dayjs(date)
             .year(year)
             .toDate();
-          onDateChange(newDate);
+          this.onDateChange(newDate);
         }}
       >
         {options}
@@ -48,7 +55,7 @@ class Header extends Component {
   }
 
   renderMonthSelector() {
-    const { date, onDateChange } = this.props;
+    const { date } = this.props;
     const month = dayjs(date).month() + 1;
     const options = [...Array(12).keys()].map(i => {
       return (
@@ -65,9 +72,9 @@ class Header extends Component {
         optionLabelProp="children"
         onChange={month => {
           const newDate = dayjs(date)
-            .month(month)
+            .month(month - 1)
             .toDate();
-          onDateChange(newDate);
+          this.onDateChange(newDate);
         }}
       >
         {options}
@@ -76,14 +83,13 @@ class Header extends Component {
   }
 
   render() {
-    const { onDateChange } = this.props;
     return (
       <header className="navigation">
         <div className="logo">日历</div>
         <div className="today-btn">
           <Button
             onClick={() => {
-              onDateChange(new Date());
+              this.onDateChange(new Date());
             }}
           >
             今天
@@ -96,4 +102,4 @@ class Header extends Component {
   }
 }
 
-export default Header;
+export default connect()(Header);

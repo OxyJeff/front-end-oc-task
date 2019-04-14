@@ -1,9 +1,9 @@
 .navigation {
-  padding: 10px;
   display: flex;
   flex-flow: row nowrap;
   border-bottom: #dadce0 1px solid;
-  text-align: left;
+  align-items: center;
+  height: 60px;
 
   .logo {
     font-size: 1.5rem;

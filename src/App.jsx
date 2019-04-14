@@ -1,13 +1,20 @@
 import React, { PureComponent } from 'react';
 import Calendar from 'components/Calendar';
 import Header from 'components/Header';
-import { EventModal } from 'components/Event';
+import EventModal from 'components/EventModal';
+import EventList from 'components/EventList';
+import { createStore } from 'redux';
+import reducers from 'redux/reducer';
+import { Provider } from 'react-redux';
 import './App.css';
+
+const store = createStore(reducers);
 
 class App extends PureComponent {
   state = {
     date: new Date(),
-    eventModalVisible: false
+    eventModalVisible: false,
+    selectedDate: undefined
   };
 
   onDateChange = date => {
@@ -18,27 +25,42 @@ class App extends PureComponent {
     }
   };
 
+  onCreateEvent = () => {
+    this.setState({
+      eventModalVisible: false,
+      selectedDate: undefined
+    });
+  };
+
   render() {
-    const { date, eventModalVisible } = this.state;
+    const { date, eventModalVisible, selectedDate } = this.state;
     return (
-      <div className="App">
-        <Header date={date} onDateChange={this.onDateChange} />
-        <section className="content">
-          <Calendar
-            date={date}
-            onDateClick={() => {
-              this.setState({ eventModalVisible: true });
-            }}
-          />
-        </section>
-        <EventModal
-          date={date}
-          visible={eventModalVisible}
-          onClose={() => {
-            this.setState({ eventModalVisible: false });
-          }}
-        />
-      </div>
+      <Provider store={store}>
+        <div className="App">
+          <Header date={date} onDateChange={this.onDateChange} />
+          <div className="main">
+            <section className="content">
+              <Calendar
+                date={date}
+                onDateClick={selectedDate => {
+                  this.setState({ eventModalVisible: true, selectedDate });
+                }}
+              />
+            </section>
+            <section>
+              <EventList />
+            </section>
+            <EventModal
+              date={selectedDate}
+              visible={eventModalVisible}
+              onClose={() => {
+                this.setState({ eventModalVisible: false });
+              }}
+              onSave={this.onCreateEvent}
+            />
+          </div>
+        </div>
+      </Provider>
     );
   }
 }

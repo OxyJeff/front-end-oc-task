@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Day from './Day';
 import dayjs from 'dayjs';
 import './index.scss';
@@ -18,6 +19,15 @@ class Calendar extends PureComponent {
     date: PropTypes.object,
     onDateClick: PropTypes.func
   };
+
+  getEventsByDate(date) {
+    const { events } = this.props;
+    date = dayjs(date);
+    const isSameDay = (d1, d2) => {
+      return d1.diff(d2, 'day') === 0;
+    };
+    return events.filter(event => isSameDay(dayjs(event.date), date));
+  }
 
   renderWeekNumber() {
     return (
@@ -42,8 +52,14 @@ class Calendar extends PureComponent {
       const days = [];
       for (let i = 0; i < DATE_COL_COUNT; i++) {
         const temp = rowStart.add(i, 'day');
+        const events = this.getEventsByDate(temp);
         const day = (
-          <Day onClick={onDateClick} key={temp.valueOf()} value={temp} />
+          <Day
+            events={events}
+            onClick={onDateClick}
+            key={temp.valueOf()}
+            value={temp}
+          />
         );
         days.push(day);
       }
@@ -66,4 +82,7 @@ class Calendar extends PureComponent {
   }
 }
 
-export default Calendar;
+const mapStateToProps = ({ events }) => {
+  return { events };
+};
+export default connect(mapStateToProps)(Calendar);

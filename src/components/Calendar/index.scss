@@ -1,7 +1,8 @@
 .oc-calendar {
   display: flex;
   flex-flow: column nowrap;
-  border-top: 1px solid #DDD;
+  height: 100%;
+  font-size: 12px;
 
   .day-row {
     display: flex;
@@ -15,9 +16,29 @@
       flex: 1 1;
       border-left: 1px solid #DDD;
       cursor: pointer;
+      position: relative;
+      overflow: hidden;
 
       &:hover {
         background-color: #ebfaff;
+      }
+
+      .day-events {
+        position: absolute;
+        width: 100%;
+        padding: 0 8px;
+        overflow: hidden;
+
+        .day-event {
+          background-color: #0B8043;
+          color: white;
+          font-weight: 400;
+          padding: 0 8px;
+          height: 22px;
+          border-radius: 4px;
+          width: 100%;
+          margin-top: 2px;
+        }
       }
     }
 
@@ -29,7 +50,7 @@
   .week-row {
     display: flex;
     flex-flow: row nowrap;
-    flex: 1 0;
+    flex: 0 0;
     border-right: 1px solid #DDD;
     border-bottom: 1px solid #DDD;
 

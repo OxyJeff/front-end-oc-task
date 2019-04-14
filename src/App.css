@@ -12,17 +12,17 @@ body {
   text-align: center;
 }
 
-.content {
-  height: 90vh;
-  padding: 10px 30px;
+.main {
+  display: flex;
+  flex-flow: column nowrap;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
+.content {
+  flex: 1 1 auto;
+}
 
-  to {
-    transform: rotate(360deg);
-  }
+ul {
+  padding-left: 0;
+  text-align: left;
+  list-style: none;
 }
